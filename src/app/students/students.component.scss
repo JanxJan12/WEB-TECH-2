@@ -1,0 +1,175 @@
+$primary-color: #5b67ca;
+$primary-hover: #3f4bb5;
+$delete-color: #ff5c5c;
+$delete-hover: #e04b4b;
+$background: #f4f6f9;
+$card-bg: #ffffff;
+$text-primary: #1a1a1a;
+$text-secondary: #555555;
+$font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+$max-width: 900px;
+$spacing: 1rem;
+$border-radius: 0.5rem;
+
+.students-container {
+  min-height: 100vh;
+  background-color: $background;
+  font-family: $font-family;
+}
+
+.page-header {
+  background: $primary-color;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+  .header-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    @media (max-width: 640px) {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.main-content {
+  max-width: $max-width;
+  margin: 2rem auto;
+  padding: $spacing;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing * 1.5;
+  gap: $spacing;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  .btn-add-student {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: none;
+    border-radius: $border-radius;
+    color: white;
+    background: linear-gradient(135deg, $primary-color, $primary-hover);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+}
+
+.students-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing;
+}
+
+.student-card {
+  background: $card-bg;
+  padding: $spacing * 1.5;
+  border-radius: $border-radius;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $spacing;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  .student-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .student-name {
+      margin: 0;
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: $text-primary;
+    }
+
+    .student-course,
+    .student-year {
+      margin: 0;
+      font-size: 0.9375rem;
+      color: $text-secondary;
+    }
+  }
+
+  .btn-delete {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: none;
+    border-radius: $border-radius;
+    color: white;
+    background: $delete-color;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: $delete-hover;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 640px) {
+  .student-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing;
+
+    .btn-delete {
+      align-self: flex-end;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+// Empty state
+.students-list:empty::before {
+  content: 'No students available. Click "Add Student" to create one.';
+  display: block;
+  padding: $spacing * 2;
+  background: $card-bg;
+  border-radius: $border-radius;
+  text-align: center;
+  color: $text-secondary;
+  font-size: 1rem;
+}

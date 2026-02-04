@@ -1,0 +1,27 @@
+<div class="students-container">
+  <header class="page-header">
+    <h1 class="header-title">Student Management System</h1>
+  </header>
+
+  <main class="main-content">
+    <div class="content-header">
+      <h2 class="section-title">Students List</h2>
+      <button class="btn-add-student" (click)="navigateToAddStudent()">
+        + Add Student
+      </button>
+    </div>
+
+    <div class="students-list">
+      <article class="student-card" *ngFor="let student of students">
+        <div class="student-info">
+          <h3 class="student-name">{{ student.name }}</h3>
+          <p class="student-course">{{ student.course }}</p>
+          <p class="student-year">Year {{ student.yearLevel }}</p>
+        </div>
+        <button class="btn-delete" (click)="deleteStudent(student.id)">
+          Delete
+        </button>
+      </article>
+    </div>
+  </main>
+</div>

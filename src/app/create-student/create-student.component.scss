@@ -1,0 +1,127 @@
+$font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+$primary-color: #4b6cb7;
+$secondary-color: #182848;
+$bg-light: #f9f9f9;
+$card-bg: #ffffff;
+$input-bg: #f0f0f0;
+$border-radius: 0.5rem;
+$spacing: 1rem;
+
+.create-student-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+  font-family: $font-family;
+}
+
+.page-header {
+  padding: 2rem 1rem;
+  text-align: center;
+  background: $primary-color;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+  .header-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    @media (max-width: 640px) {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.main-content {
+  max-width: 600px;
+  margin: -2rem auto 2rem auto;
+  padding: $spacing;
+}
+
+.form-card {
+  background-color: $card-bg;
+  padding: 2rem;
+  border-radius: $border-radius;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: $spacing;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  label {
+    font-weight: 500;
+    color: $secondary-color;
+  }
+
+  input, select {
+    padding: 0.75rem 1rem;
+    border-radius: $border-radius;
+    border: 1px solid #ccc;
+    background-color: $input-bg;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px rgba(75,108,183,0.2);
+      outline: none;
+    }
+  }
+}
+
+.form-row {
+  display: flex;
+  gap: $spacing;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-back {
+    background-color: #ccc;
+    padding: 0.75rem 1.5rem;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #b3b3b3;
+    }
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, $primary-color, $secondary-color);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
