@@ -1,110 +1,29 @@
-<div class="create-student-container">
-  <header class="page-header">
-    <h1 class="header-title">Create New Student</h1>
-  </header>
+<div class="form-container">
+  <h2>Create Student</h2>
 
-  <main class="main-content">
-    <form class="student-form" (ngSubmit)="onSubmit()">
-      <div class="form-card">
-        <div class="form-group">
-          <label for="studentId">Student ID</label>
-          <input
-            type="text"
-            id="studentId"
-            name="studentId"
-            [(ngModel)]="studentForm.studentId"
-            placeholder="Enter student ID"
-            required
-          />
-        </div>
+  <form [formGroup]="studentForm">
 
-        <div class="form-group">
-          <label for="firstName">First Name</label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            [(ngModel)]="studentForm.firstName"
-            placeholder="Enter first name"
-            required
-          />
-        </div>
+    <input type="text" placeholder="First Name" formControlName="first_name">
+    <div *ngIf="studentForm.get('first_name')?.touched && studentForm.get('first_name')?.invalid">
+      First name is required
+    </div>
 
-        <div class="form-group">
-          <label for="lastName">Last Name</label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            [(ngModel)]="studentForm.lastName"
-            placeholder="Enter last name"
-            required
-          />
-        </div>
+    <input type="text" placeholder="Last Name" formControlName="last_name">
+    <div *ngIf="studentForm.get('last_name')?.touched && studentForm.get('last_name')?.invalid">
+      Last name is required
+    </div>
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            [(ngModel)]="studentForm.email"
-            placeholder="Enter email"
-            required
-          />
-        </div>
+    <input type="email" placeholder="Email" formControlName="email">
+    <div *ngIf="studentForm.get('email')?.touched && studentForm.get('email')?.invalid">
+      Valid email is required
+    </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="age">Age</label>
-            <input
-              type="number"
-              id="age"
-              name="age"
-              [(ngModel)]="studentForm.age"
-              placeholder="Age"
-              min="1"
-              max="100"
-              required
-            />
-          </div>
+    <input type="number" placeholder="Age" formControlName="age">
+    <input type="text" placeholder="Course" formControlName="course">
+    <input type="number" placeholder="Year Level" formControlName="year_level">
+    <input type="number" placeholder="GAP" formControlName="gap">
 
-          <div class="form-group">
-            <label for="gpa">GPA</label>
-            <input
-              type="number"
-              id="gpa"
-              name="gpa"
-              [(ngModel)]="studentForm.gpa"
-              placeholder="GPA (0-4.0)"
-              step="0.01"
-              min="0"
-              max="4.0"
-              required
-            />
-          </div>
-        </div>
+    <button type="button" (click)="createStudent()">Create Student</button>
 
-        <div class="form-group">
-          <label for="enrollmentStatus">Enrollment Status</label>
-          <select
-            id="enrollmentStatus"
-            name="enrollmentStatus"
-            [(ngModel)]="studentForm.enrollmentStatus"
-            required
-          >
-            <option value="" disabled selected>Select status</option>
-            <option *ngFor="let status of enrollmentStatuses" [value]="status">
-              {{ status }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-actions">
-          <button type="button" class="btn-back" (click)="onBack()">Back</button>
-          <button type="submit" class="btn-submit">Create Student</button>
-        </div>
-      </div>
-    </form>
-  </main>
+  </form>
 </div>

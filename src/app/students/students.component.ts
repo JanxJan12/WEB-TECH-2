@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { StudentsService } from '../../services/students.service';
+import { GetStudent } from '../../models/student.model';
+import { provideHttpClient } from '@angular/common/http';
 
-interface Student {
-  id: number;
-  name: string;
-  course: string;
-  yearLevel: string;
-}
+providers: [
+  provideHttpClient()
+]
 
 @Component({
   selector: 'app-students',
@@ -16,47 +16,43 @@ interface Student {
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.scss']
 })
-export class StudentsComponent {
-  students: Student[] = [
-    {
-      id: 1,
-      name: 'John Martinez',
-      course: 'Computer Science',
-      yearLevel: '3rd Year'
-    },
-    {
-      id: 2,
-      name: 'Son Guko',
-      course: 'Information Technology',
-      yearLevel: '2nd Year'
-    },
-    {
-      id: 3,
-      name: 'Chinchin abriguez',
-      course: 'Software Engineering',
-      yearLevel: '4th Year'
-    },
-    {
-      id: 4,
-      name: 'Wilson John',
-      course: 'Data Science',
-      yearLevel: '1st Year'
-    },
-    {
-      id: 5,
-      name: 'Wing Chun',
-      course: 'Computer Science',
-      yearLevel: '3rd Year'
-    }
-  ];
+export class StudentsComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  students = signal<GetStudent[]>([]);
+
+  constructor(
+    private router: Router,
+    private studentsService: StudentsService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadStudents();
+  }
+
+  loadStudents() {
+    this.studentsService.getStudents().subscribe({
+      next: (data) => {
+        this.students.set(data);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
 
   navigateToAddStudent(): void {
     this.router.navigate(['/students/create']);
   }
 
-  deleteStudent(id: number): void {
-    this.students = this.students.filter(student => student.id !== id);
+  deleteStudent(studentId: string): void {
+    this.studentsService.deleteStudent(studentId).subscribe({
+      next: () => {
+        const updated = this.students().filter(s => s.id !== studentId);
+        this.students.set(updated);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 }
