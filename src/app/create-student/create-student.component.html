@@ -1,29 +1,45 @@
-<div class="form-container">
-  <h2>Create Student</h2>
+<header class="page-header">
+  <h1 class="header-title">Create Student</h1>
+</header>
 
-  <form [formGroup]="studentForm">
+<main class="container">
+  <section class="panel" [formGroup]="form">
 
-    <input type="text" placeholder="First Name" formControlName="first_name">
-    <div *ngIf="studentForm.get('first_name')?.touched && studentForm.get('first_name')?.invalid">
-      First name is required
+    <label>First Name</label>
+    <input type="text" formControlName="first_name">
+
+    <label>Last Name</label>
+    <input type="text" formControlName="last_name">
+
+    <label>Email</label>
+    <input type="email" formControlName="email">
+
+    <label>Age</label>
+    <input type="number" formControlName="age">
+
+    <label>Course</label>
+    <input type="text" formControlName="course">
+
+    <label>Year Level</label>
+    <input type="number" formControlName="year_level">
+
+    <label>GPA</label>
+    <input type="number" step="0.01" formControlName="gpa">
+
+    <label>Enrollment Status</label>
+    <select formControlName="enrollment_status">
+      <option value="">Select status</option>
+      <option value="Enrolled">Enrolled</option>
+      <option value="Not Enrolled">Not Enrolled</option>
+      <option value="Graduated">Graduated</option>
+    </select>
+
+    <div class="actions">
+      <button class="btn" type="button" (click)="back()">Back</button>
+      <button class="btn primary" type="button" (click)="createStudent()">
+        Add Student
+      </button>
     </div>
 
-    <input type="text" placeholder="Last Name" formControlName="last_name">
-    <div *ngIf="studentForm.get('last_name')?.touched && studentForm.get('last_name')?.invalid">
-      Last name is required
-    </div>
-
-    <input type="email" placeholder="Email" formControlName="email">
-    <div *ngIf="studentForm.get('email')?.touched && studentForm.get('email')?.invalid">
-      Valid email is required
-    </div>
-
-    <input type="number" placeholder="Age" formControlName="age">
-    <input type="text" placeholder="Course" formControlName="course">
-    <input type="number" placeholder="Year Level" formControlName="year_level">
-    <input type="number" placeholder="GAP" formControlName="gap">
-
-    <button type="button" (click)="createStudent()">Create Student</button>
-
-  </form>
-</div>
+  </section>
+</main>

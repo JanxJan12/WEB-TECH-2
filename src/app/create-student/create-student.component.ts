@@ -1,52 +1,63 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+
+import { Component, inject } from '@angular/core';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { StudentsService } from '../../services/students.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { CreateStudentPayload } from '../../models/student.model';
 
 @Component({
   selector: 'app-create-student',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './create-student.component.html',
-  styleUrls: ['./create-student.component.scss']
+  styleUrls: ['./create-student.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class CreateStudentComponent {
 
-  studentForm: FormGroup;
+  private readonly studentsService = inject(StudentsService);
+  private readonly router = inject(Router);
 
-  constructor(
-    private fb: FormBuilder,
-    private studentsService: StudentsService,
-    private router: Router
-  ) {
-    this.studentForm = this.fb.group({
-      first_name: ['', Validators.required],
-      last_name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      age: ['', Validators.required],
-      course: ['', Validators.required],
-      year_level: ['', Validators.required],
-      gap: ['', Validators.required],
-      enrollment_status: ['enrolled']
-    });
-  }
+public form = new FormGroup({
+  first_name: new FormControl('', Validators.required),
+  last_name: new FormControl('', Validators.required),
+  email: new FormControl('', [Validators.required, Validators.email]),
+  age: new FormControl('', Validators.required),
+  course: new FormControl('', Validators.required),
+  year_level: new FormControl('', Validators.required),
+  gpa: new FormControl('', Validators.required),
+  enrollment_status: new FormControl('', Validators.required),
+});
 
-  createStudent() {
 
-    if (this.studentForm.invalid) {
-      this.studentForm.markAllAsTouched();
+  public async createStudent(): Promise<void> {
+    if (this.form.invalid) {
+      console.log('Form invalid');
       return;
     }
 
-    this.studentsService.createStudent(this.studentForm.value).subscribe({
-      next: () => {
-        alert('Student created successfully!');
-        this.router.navigate(['/students']);
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
+    const payload: CreateStudentPayload = {
+      first_name: this.form.value.first_name ?? '',
+      last_name: this.form.value.last_name ?? '',
+      email: this.form.value.email ?? '',
+      age: Number(this.form.value.age),
+      course: this.form.value.course ?? '',
+      year_level: Number(this.form.value.year_level),
+      gpa: Number(this.form.value.gpa),
+      enrollment_status: 'Active', // number type
+    };
+
+    try {
+      console.log('Creating student', payload);
+      await this.studentsService.createStudent(payload);
+      // Navigate back to student list after creation
+      this.router.navigate(['/students']);
+    } catch (error) {
+      console.error('Error creating student:', error);
+    }
+  }
+
+  public back(): void {
+    this.router.navigate(['/students']);
   }
 }

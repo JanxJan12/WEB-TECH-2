@@ -1,27 +1,33 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { GetStudent, CreateStudentPayload } from '../models/student.model';
-
-import { Observable } from 'rxjs'
+import { HttpClient } from "@angular/common/http";
+import { inject, Injectable } from "@angular/core";
+import { firstValueFrom } from "rxjs";
+import { CreateStudentPayload, GetStudents } from "../models/student.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentsService {
 
-  private apiUrl = 'http://localhost:3000/students'; // adjust if needed
+  private readonly http = inject(HttpClient);
+  private readonly STUDENTS_API = 'http://localhost:3000/students';
 
-  constructor(private http: HttpClient) {}
-
-  getStudents(): Observable<GetStudent[]> {
-    return this.http.get<GetStudent[]>(this.apiUrl);
+  async getStudents(): Promise<GetStudents[]> {
+    const response = await firstValueFrom(
+      this.http.get<GetStudents[]>(`${this.STUDENTS_API}`)
+    );
+    return response ?? [];
   }
 
-  createStudent(payload: CreateStudentPayload): Observable<GetStudent> {
-    return this.http.post<GetStudent>(this.apiUrl, payload);
+  async createStudent(student: CreateStudentPayload): Promise<GetStudents> {
+    const response = await firstValueFrom(
+      this.http.post<GetStudents>(`${this.STUDENTS_API}`, student)
+    );
+    return response;
   }
 
-  deleteStudent(studentId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${studentId}`);
+  async deleteStudent(studentId: string): Promise<void> {
+    await firstValueFrom(
+      this.http.delete<void>(`${this.STUDENTS_API}/${studentId}`)
+    );
   }
 }

@@ -1,58 +1,35 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { StudentsService } from '../../services/students.service';
-import { GetStudent } from '../../models/student.model';
-import { provideHttpClient } from '@angular/common/http';
 
-providers: [
-  provideHttpClient()
-]
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { StudentsService } from '../../services/students.service';
+import { GetStudents } from '../../models/student.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-students',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './students.component.html',
-  styleUrls: ['./students.component.scss']
+  styleUrls: ['./students.component.scss'],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
 })
 export class StudentsComponent implements OnInit {
+  private readonly studentsService = inject(StudentsService);
 
-  students = signal<GetStudent[]>([]);
+  public students = signal<GetStudents[]>([]);
 
-  constructor(
-    private router: Router,
-    private studentsService: StudentsService
-  ) {}
-
-  ngOnInit(): void {
-    this.loadStudents();
+  async ngOnInit(): Promise<void> {
+    await this.loadStudents();
   }
 
-  loadStudents() {
-    this.studentsService.getStudents().subscribe({
-      next: (data) => {
-        this.students.set(data);
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
+  private async loadStudents() {
+    const data = await this.studentsService.getStudents();
+    this.students.set(data);
   }
 
-  navigateToAddStudent(): void {
-    this.router.navigate(['/students/create']);
-  }
-
-  deleteStudent(studentId: string): void {
-    this.studentsService.deleteStudent(studentId).subscribe({
-      next: () => {
-        const updated = this.students().filter(s => s.id !== studentId);
-        this.students.set(updated);
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
+  // Delete student
+  public async deleteStudent(studentId: string) {
+    if (!confirm('Are you sure you want to delete this student?')) return;
+    await this.studentsService.deleteStudent(studentId);
+    await this.loadStudents(); // refresh list
   }
 }
